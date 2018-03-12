@@ -1,0 +1,48 @@
+{% extends  'base.html'%}
+{% block body %}
+    <div class="side-body">
+        <div class="page-title">
+            <span class="title">测试机器人</span>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content">
+                        <p id="response">
+
+                        </p>
+                        </div>
+                        <div>
+                            <input id="ask" type="text" class="form-control" placeholder="Text input">
+                            <button type="button" onclick="getrequest()" class="btn btn-success">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script>
+    function getrequest() {
+        var ask=document.getElementById("ask");
+        var ajax = new XMLHttpRequest();
+        var word=ask.value;
+        ajax.open('get','/chatbot/api?question='+word);
+        ajax.send();
+        ajax.onreadystatechange = function () {
+            if (ajax.readyState === 4 && ajax.status === 200) {
+            var data=JSON.parse(ajax.responseText);
+            document.getElementById("response").innerHTML=data.anwser;
+            }
+        };
+{#                    //var a=ajax.response;#}
+{#                    var obj = JSON.parse(ajax.responseText);#}
+{#                    var data=obj.table;#}
+{#                    alert(data[0]['answer']);#}
+
+    }
+</script>
+{% endblock %}
